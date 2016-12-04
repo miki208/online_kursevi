@@ -46,13 +46,26 @@ BEGIN
 	END IF;
 END $$
 
--- nove unose je potrebno pravilno inicijalizovati (dodati sertifikate, izmeniti poene, itd)
+/* nove unose je potrebno pravilno inicijalizovati (dodati sertifikate, izmeniti poene, itd) */
 DROP TRIGGER IF EXISTS triger2_1 $$
 CREATE TRIGGER triger2_1 AFTER INSERT ON prijavljuje
 FOR EACH ROW
 BEGIN
 	DECLARE dat_kr DATE;
 	DECLARE trajanje INTEGER;
+	DECLARE max_ucesnika INTEGER;
+	DECLARE br_ucesnika INTEGER;
+	
+	SET br_ucesnika = (SELECT COUNT(*) FROM prijavljuje WHERE Ciklus_datum_pocetka = NEW.Ciklus_datum_pocetka AND Ciklus_Kurs_sifra = NEW.Ciklus_Kurs_sifra);
+	SELECT k.trajanje, k.max_ucesnika INTO trajanje, max_ucesnika FROM kurs k WHERE k.sifra = NEW.Ciklus_Kurs_sifra;
+	
+	IF(EXISTS(SELECT * FROM sertifikat WHERE Prijavljuje_Ucesnik_Korisnik_kor_ime = NEW.Ucesnik_Korisnik_kor_ime AND Prijavljuje_Ciklus_Kurs_sifra = NEW.Ciklus_Kurs_sifra)) THEN
+		SIGNAL SQLSTATE '45000' SET message_text = 'Ucesnik je vec zavrsio ovaj kurs';
+	END IF;
+	
+	IF(br_ucesnika > max_ucesnika) THEN
+		SIGNAL SQLSTATE '45000' SET message_text = 'Dostignut je maksimalan broj ucesnika';
+	END IF;
 	
 	IF(NEW.progres = 100) THEN
 		SET dat_kr = (SELECT c.datum_kraja FROM ciklus c WHERE c.datum_pocetka = NEW.Ciklus_datum_pocetka AND c.Kurs_sifra = NEW.Ciklus_Kurs_sifra);
@@ -63,7 +76,7 @@ BEGIN
 	UPDATE ucesnik SET poeni = poeni + CEIL((trajanje * 1.0 / 100) * NEW.progres) WHERE Korisnik_kor_ime = NEW.Ucesnik_Korisnik_kor_ime;
 END $$
 
--- ovaj triger se odnosi na azuriranje postojeceg reda u prijavama
+/* ovaj triger se odnosi na azuriranje postojeceg reda u prijavama*/
 DROP TRIGGER IF EXISTS triger2_2 $$
 CREATE TRIGGER triger2_2 AFTER UPDATE ON prijavljuje
 FOR EACH ROW
