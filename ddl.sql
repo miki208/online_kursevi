@@ -14,6 +14,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema online_kursevi
 -- -----------------------------------------------------
+DROP DATABASE IF EXISTS online_kursevi;
+
 CREATE SCHEMA IF NOT EXISTS `online_kursevi` DEFAULT CHARACTER SET utf8 ;
 USE `online_kursevi` ;
 
