@@ -20,7 +20,7 @@ dist: clean
 	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
 	
 publish:
-	-tar -cz -f ../$(DIR)_pub.tar.gz *.sql Makefile opis.doc model.mwb
+	-tar -cz -f ../$(DIR)_pub.tar.gz ddl.sql trigger.sql insert.sql Makefile opis.doc model.mwb
 	
 backup: dist
 	-scp ../$(DIR).tar.gz mi13304@alas.matf.bg.ac.rs:backup/
