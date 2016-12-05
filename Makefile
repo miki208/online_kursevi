@@ -1,6 +1,6 @@
 DIR = online_kursevi
 
-.PHONY: all create trigger insert dist clean backup
+.PHONY: all create trigger insert dist clean backup publish
 
 all: create insert
 
@@ -18,6 +18,9 @@ clean:
 	
 dist: clean
 	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
+	
+publish:
+	-tar -cz -f ../$(DIR)_pub.tar.gz *.sql Makefile opis.doc model.mwb
 	
 backup: dist
 	-scp ../$(DIR).tar.gz mi13304@alas.matf.bg.ac.rs:backup/
