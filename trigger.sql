@@ -56,6 +56,10 @@ BEGIN
 	DECLARE max_ucesnika INTEGER;
 	DECLARE br_ucesnika INTEGER;
 	
+	IF(NEW.progres > 100) THEN
+		SIGNAL SQLSTATE '45000' SET message_text = 'Progres ne moze biti veci od 100';
+	END IF;
+	
 	SET br_ucesnika = (SELECT COUNT(*) FROM prijavljuje WHERE Ciklus_datum_pocetka = NEW.Ciklus_datum_pocetka AND Ciklus_Kurs_sifra = NEW.Ciklus_Kurs_sifra);
 	SELECT k.trajanje, k.max_ucesnika INTO trajanje, max_ucesnika FROM kurs k WHERE k.sifra = NEW.Ciklus_Kurs_sifra;
 	
@@ -83,6 +87,10 @@ FOR EACH ROW
 BEGIN
 	DECLARE dat_kr DATE;
 	DECLARE trajanje INTEGER;
+	
+	IF(NEW.progres > 100) THEN
+		SIGNAL SQLSTATE '45000' SET message_text = 'Progres ne moze biti veci od 100';
+	END IF;
 	
 	IF(NEW.progres - OLD.progres <= 0) THEN
 		SIGNAL SQLSTATE '45000' SET message_text = 'Novi progres mora biti veci od prethodnog';
