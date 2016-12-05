@@ -1,4 +1,6 @@
-.PHONY: all create trigger insert
+DIR = online_kursevi
+
+.PHONY: all create trigger insert dist clean
 
 all: create insert
 
@@ -10,3 +12,9 @@ insert: trigger
 	
 trigger:
 	mysql -u root -p < trigger.sql
+	
+clean:
+	-rm -f *.mwb.bak
+	
+dist: clean
+	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
