@@ -1,6 +1,6 @@
 DIR = online_kursevi
 
-.PHONY: all create trigger insert dist clean
+.PHONY: all create trigger insert dist clean backup
 
 all: create insert
 
@@ -18,3 +18,6 @@ clean:
 	
 dist: clean
 	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
+	
+backup: dist
+	-scp ../$(DIR).tar.gz mi13304@alas.matf.bg.ac.rs:backup/
