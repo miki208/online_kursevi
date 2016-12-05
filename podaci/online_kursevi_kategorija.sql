@@ -17,7 +17,7 @@
 -- Dumping data for table `kategorija`
 --
 
-INSERT INTO `kategorija` VALUES (1,'JavaScript'),(2,'AngularJS'),(3,'jQuery'),(4,'Git'),(5,'Backbone.js'),(6,'HTML&CSS'),(7,'ReactJS'),(8,'Node.js'),(9,'Ember.js'),(10,'Express.js'),(11,'RegEx');
+INSERT INTO `Kategorija` VALUES (1,'JavaScript'),(2,'AngularJS'),(3,'jQuery'),(4,'Git'),(5,'Backbone.js'),(6,'HTML&CSS'),(7,'ReactJS'),(8,'Node.js'),(9,'Ember.js'),(10,'Express.js'),(11,'RegEx');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
