@@ -7,7 +7,19 @@
 
 void error_fatal(char *format, ...);
 
+const char* host = "localhost";
+const char* user = "root";
+const char* password = "";
+const char* db = "online_kursevi";
+
 int main() {
+    MYSQL *conn = mysql_init(NULL);
+    
+    if(mysql_real_connect(conn, host, user, password, db, 0, NULL, 0) == NULL)
+        error_fatal("Greska u konekciji: %s\n", mysql_error(conn));
+    
+    mysql_close(conn);
+    
     return 0;
 }
 
