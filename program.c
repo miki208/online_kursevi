@@ -17,9 +17,9 @@ const char* password = "";
 const char* db = "online_kursevi";
 
 int main() {
-    int quit = 0, i;
+    int quit = 0, i, id_kursa;
     char query[QUERYLEN];
-    char input[UINPUTLEN], kor_ime[46], ime[46], prezime[46], email[46];
+    char input[UINPUTLEN], kor_ime[46], ime[46], prezime[46], email[46], datp[11], datk[11];
     MYSQL* conn = mysql_init(NULL);
     MYSQL_RES* result_set;
     MYSQL_FIELD* field;
@@ -50,7 +50,7 @@ int main() {
                 fgets(input, UINPUTLEN, stdin);
                 input[strlen(input) - 1] = '\0';
                 
-                sprintf(query, "SELECT ime, prezime, naziv, progres, datum_pocetka, datum_kraja FROM Ucesnik JOIN Korisnik ON Korisnik_kor_ime = kor_ime LEFT JOIN Prijavljuje ON Ucesnik_Korisnik_kor_ime = Korisnik_kor_ime LEFT JOIN Ciklus ON datum_pocetka = Ciklus_datum_pocetka AND Kurs_Sifra = Ciklus_Kurs_sifra LEFT JOIN Kurs ON sifra = Kurs_sifra WHERE Korisnik_kor_ime = '%s'", input);
+                sprintf(query, "SELECT ime, prezime, poeni, naziv, progres, datum_pocetka, datum_kraja FROM Ucesnik JOIN Korisnik ON Korisnik_kor_ime = kor_ime LEFT JOIN Prijavljuje ON Ucesnik_Korisnik_kor_ime = Korisnik_kor_ime LEFT JOIN Ciklus ON datum_pocetka = Ciklus_datum_pocetka AND Kurs_Sifra = Ciklus_Kurs_sifra LEFT JOIN Kurs ON sifra = Kurs_sifra WHERE Korisnik_kor_ime = '%s'", input);
                 
                 if(mysql_query(conn, query))
                     error_fatal("Upit 1: %s\n", mysql_error(conn));
@@ -99,9 +99,18 @@ int main() {
                 sprintf(query, "INSERT INTO Ucesnik(Korisnik_kor_ime, poeni) VALUES ('%s', 0)", kor_ime);
                 if(mysql_query(conn, query))
                     error_fatal("Upit 3: %s\n", mysql_error(conn));
+                
                 getchar();
                 break;
             case 4:
+                getchar();
+                printf("Unesite id kursa, datum pocetka i datum kraja kursa (datum u obliku YYYY-MM-DD): ");
+                scanf("%d %s %s", &id_kursa, datp, datk);
+                
+                sprintf(query, "INSERT INTO Ciklus(Kurs_sifra, datum_pocetka, datum_kraja) VALUES (%d, '%s', '%s')", id_kursa, datp, datk);
+                if(mysql_query(conn, query))
+                    error_fatal("Upit 4: %s\n", mysql_error(conn));
+                
                 getchar();
                 break;
             case 5:
@@ -115,6 +124,7 @@ int main() {
                 printf("Ova opcija ne postoji\n");
         }
         if(!quit) {
+            printf("----------------------------------\n");
             printf("Da se vratite na glavni meni, pritisnite enter ");
             getchar();
         }
