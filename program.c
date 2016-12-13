@@ -68,6 +68,24 @@ int main() {
                 mysql_free_result(result_set);
                 break;
             case 2:
+                getchar();
+                
+                sprintf(query, "SELECT Sertifikat.id AS br_sertifikata, datum_dodele, Korisnik.*, poeni, sifra AS sifra_kursa, naziv, trajanje, max_ucesnika FROM Sertifikat JOIN Korisnik ON Prijavljuje_Ucesnik_Korisnik_kor_ime = kor_ime JOIN Ucesnik ON kor_ime = Korisnik_kor_ime JOIN Kurs ON Prijavljuje_Ciklus_Kurs_sifra = sifra; ");
+                
+                if(mysql_query(conn, query))
+                    error_fatal("Upit 2: %s\n", mysql_error(conn));
+                
+                result_set = mysql_use_result(conn);
+                num_fields = mysql_num_fields(result_set);
+                field = mysql_fetch_fields(result_set);
+                
+                while((row = mysql_fetch_row(result_set)) != NULL) {
+                    printf("--------------------\n");
+                    for(i = 0; i < num_fields; i++)
+                        printf("%-20s| %s\n", field[i].name, row[i]);
+                }
+                
+                mysql_free_result(result_set);
                 break;
             case 3:
                 break;
