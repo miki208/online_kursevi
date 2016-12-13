@@ -17,7 +17,7 @@ const char* password = "";
 const char* db = "online_kursevi";
 
 int main() {
-    int quit = 0, i, id_kursa;
+    int quit = 0, i, id_kursa, pomeraj;
     char query[QUERYLEN];
     char input[UINPUTLEN], kor_ime[46], ime[46], prezime[46], email[46], datp[11], datk[11];
     MYSQL* conn = mysql_init(NULL);
@@ -129,6 +129,16 @@ int main() {
                 getchar();
                 break;
             case 6:
+                getchar();
+                
+                printf("Unesite korisnicko ime, sifru kursa, datum pocetka i za koliko se uvecava progres: ");
+                scanf("%s %d %s %d", kor_ime, &id_kursa, datp, &pomeraj);
+                
+                sprintf(query, "UPDATE Prijavljuje SET progres = progres + %d WHERE Ciklus_datum_pocetka = '%s' AND Ciklus_Kurs_sifra = %d AND Ucesnik_Korisnik_kor_ime = '%s'", pomeraj, datp, id_kursa, kor_ime);
+                if(mysql_query(conn, query))
+                    error_fatal("Upit 6: %s\n", mysql_error(conn));
+                
+                getchar();
                 break;
             case 7:
                 quit = 1;
