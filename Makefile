@@ -20,7 +20,7 @@ $(PROGRAM): $(SRC)
 	gcc $(SRC) -o $(PROGRAM) $(FLAGS)
 
 clean:
-	-rm -f *.mwb.bak *.out
+	-rm -f *.mwb.bak *.out *~
 	
 dist: clean
 	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
