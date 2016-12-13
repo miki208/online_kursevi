@@ -46,6 +46,7 @@ int main() {
         switch(opcija) {
             case 1:
                 getchar();
+                
                 printf("Unesite korisnicko ime: ");
                 fgets(input, UINPUTLEN, stdin);
                 input[strlen(input) - 1] = '\0';
@@ -89,6 +90,7 @@ int main() {
                 break;
             case 3:
                 getchar();
+                
                 printf("Unesite novo korisnicko ime, ime, prezime i email: ");
                 scanf("%s %s %s %s", kor_ime, ime, prezime, email);
                 
@@ -104,6 +106,7 @@ int main() {
                 break;
             case 4:
                 getchar();
+                
                 printf("Unesite id kursa, datum pocetka i datum kraja kursa (datum u obliku YYYY-MM-DD): ");
                 scanf("%d %s %s", &id_kursa, datp, datk);
                 
@@ -114,6 +117,16 @@ int main() {
                 getchar();
                 break;
             case 5:
+                getchar();
+                
+                printf("Unesite id kursa, datum pocetka i korisnicko ime: ");
+                scanf("%d %s %s", &id_kursa, datp, kor_ime);
+                
+                sprintf(query, "INSERT INTO Prijavljuje(Ciklus_Kurs_sifra, Ciklus_datum_pocetka, Ucesnik_Korisnik_kor_ime, progres) VALUES (%d, '%s', '%s', 0)", id_kursa, datp, kor_ime);
+                if(mysql_query(conn, query))
+                    error_fatal("Upit 5: %s\n", mysql_error(conn));
+                
+                getchar();
                 break;
             case 6:
                 break;
