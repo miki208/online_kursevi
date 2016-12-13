@@ -3,9 +3,9 @@ PROGRAM = program.out
 SRC = program.c
 FLAGS = -g -Wall `mysql_config --cflags --libs`
 
-.PHONY: all create trigger insert dist clean backup publish program
+.PHONY: all create trigger insert dist clean backup publish
 
-all: create insert program
+all: create insert $(PROGRAM)
 
 create:
 	mysql -u root -p < ddl.sql
@@ -16,11 +16,11 @@ insert: trigger
 trigger:
 	mysql -u root -p < trigger.sql
 	
-program: $(SRC)
+$(PROGRAM): $(SRC)
 	gcc $(SRC) -o $(PROGRAM) $(FLAGS)
 
 clean:
-	-rm -f *.mwb.bak
+	-rm -f *.mwb.bak *.out
 	
 dist: clean
 	-tar -cz -C .. -f ../$(DIR).tar.gz $(DIR)
